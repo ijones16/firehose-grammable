@@ -32,6 +32,9 @@ gem 'jbuilder', '~> 1.2'
 # 12_factor for heroku
 gem 'rails_12factor', group: :production
 
+# simple form for forms
+gem 'simple_form'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
