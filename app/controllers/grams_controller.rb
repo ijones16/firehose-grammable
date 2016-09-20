@@ -1,12 +1,13 @@
 class GramsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
+    @grams = Gram.all
   end 
 
   def show
     @gram = Gram.find_by_id(params[:id])
-    not_found_if_blank(@gram)
+    return render_not_found if @gram.blank?
   end
 
   def new
@@ -25,12 +26,14 @@ class GramsController < ApplicationController
 
   def edit
     @gram = Gram.find_by_id(params[:id])
-    not_found_if_blank(@gram)
+    return render_not_found if @gram.blank?
+    render text: 'Forbidden :(', status: :forbidden if @gram.user != current_user
   end
 
   def update
     @gram = Gram.find_by_id(params[:id])
-    not_found_if_blank(@gram)
+    return render_not_found if @gram.blank?
+    return render text: 'Forbidden :(', status: :forbidden if @gram.user != current_user
     
     @gram.update_attributes(gram_params)
     
@@ -43,20 +46,14 @@ class GramsController < ApplicationController
 
   def destroy
     @gram = Gram.find_by_id(params[:id])
-    not_found_if_blank(@gram)
-
-    @gram.destroy
+    return render_not_found if @gram.blank?
+    return render text: 'Forbidden :(', status: :forbidden if @gram.user != current_user
+    @gram.destroy  
     redirect_to root_path
   end
 
   private
   def gram_params
-    params.require(:gram).permit(:message)
-  end
-
-  def not_found_if_blank(gram)
-    if gram.blank? || gram.nil?
-      return render text: 'Not Found :(', status: :not_found
-    end
+    params.require(:gram).permit(:message, :picture)
   end
 end

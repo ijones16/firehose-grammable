@@ -37,6 +37,12 @@ gem 'simple_form'
 
 gem 'devise'
 
+# Image and Video uploading
+gem 'carrierwave'
+gem 'fog'
+
+gem 'figaro'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
